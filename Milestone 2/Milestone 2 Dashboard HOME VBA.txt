@@ -1,0 +1,79 @@
+Sub Toggle_Button()
+    Dim ws As Worksheet
+    Dim isOn As Boolean  ' Flag to track toggle state
+
+    Set ws = ThisWorkbook.ActiveSheet
+
+    With ws
+        ' Check ToggleValue
+        If IsEmpty(.Range("ToggleValue").Value) Then
+            ' Initialize ToggleValue if it's empty
+            .Range("ToggleValue").Value = True
+        End If
+        
+        isOn = CBool(.Range("ToggleValue").Value)
+
+        ' Update Toggle Display based on isOn
+        If isOn Then
+            Debug.Print "Toggle is ON"
+            .Shapes("txtboxOnOff").TextFrame.Characters.Text = "ON"
+            .Shapes("ToggleButton").Fill.ForeColor.RGB = RGB(117, 199, 1)  ' Green
+            .Shapes("txtboxOnOff").TextFrame.HorizontalAlignment = xlHAlignCenter  ' Align text center
+
+            On Error Resume Next
+            .Rows("12").Hidden = False  ' Unhide row 12
+            If Err.Number <> 0 Then
+                MsgBox "Error unhiding row 12.", vbCritical
+                Err.Clear
+            End If
+            On Error GoTo 0
+            .Range("ToggleValue").Value = False  ' Toggle to OFF
+
+            ' Update radio button location
+            .Shapes("radioButton").Left = .Shapes("ToggleButton").Left + .Shapes("ToggleButton").Width - .Shapes("radioButton").Width - 5
+
+        Else
+            Debug.Print "Toggle is OFF"
+            .Shapes("txtboxOnOff").TextFrame.Characters.Text = "OFF"
+            .Shapes("ToggleButton").Fill.ForeColor.RGB = RGB(232, 27, 34)  ' Red
+            .Shapes("txtboxOnOff").TextFrame.HorizontalAlignment = xlHAlignCenter  ' Align text center
+
+            On Error Resume Next
+            .Rows("12").Hidden = True  ' Hide row 12
+            If Err.Number <> 0 Then
+                MsgBox "Error hiding row 12.", vbCritical
+                Err.Clear
+            End If
+            On Error GoTo 0
+            .Range("ToggleValue").Value = True  ' Toggle to ON
+
+            ' Update radio button location
+            .Shapes("radioButton").Left = .Shapes("ToggleButton").Left + 5
+
+        End If
+
+    End With
+
+    Set ws = Nothing
+
+End Sub
+
+
+
+
+The dashboard includes the following sheets to facilitate easy navigation and in-depth exploration:
+
+- **Home**: The central hub for navigating the dashboard.
+- **After Data (cleaning)**: Displays the cleaned and processed dataset.
+- **Before Data (original)**: Presents the raw, unprocessed data.
+- **Input**: A space for data entry or adjustments to the dataset.
+- **Help**: Provides guidance and instructions for using the dashboard.
+- **Demographical Analysis**: Examines the impact of demographic factors on stroke risk.
+- **Medical and Health Analysis**: Focuses on medical conditions and health metrics.
+- **Lifestyle Factor Analysis**: Investigates lifestyle habits and their relation to stroke.
+
+Through the hyperlinks, users can seamlessly transition between these sheets to explore different dimensions of the data. This dashboard not only enhances our understanding of the various contributors to stroke but also aids in developing predictive models for identifying high-risk individuals. By leveraging this information, healthcare professionals can implement more effective preventive measures and deliver targeted interventions, ultimately improving patient outcomes and fostering proactive healthcare strategies.
+
+---
+
+This paragraph gives a clear and concise overview of the dashboard, highlighting its purpose, structure, and functionality, as well as its potential impact on healthcare analysis and interventions.
